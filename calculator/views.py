@@ -1,3 +1,5 @@
+import re
+
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -35,4 +37,14 @@ def compute(request):
 
 def delete(request, meuble_id):
     Meuble.objects.get(id=meuble_id).delete()
+    return HttpResponseRedirect(reverse('index'))
+
+
+def multiple_delete(request):
+
+    split_list = request.body.decode().split('&')[1:]
+    for x in split_list:
+        if x.startswith('checkbox_') and x.endswith('on'):
+            meuble_id = re.search(r'([0-9]+)', x).group(0)
+            Meuble.objects.get(id=meuble_id).delete()
     return HttpResponseRedirect(reverse('index'))

@@ -49,19 +49,27 @@
         </div>
         <div class="d-flex flex-column meubles-bloc">
             {% if meubles %}
-                {% for meuble in meubles %}
-                    <div class="d-flex flex-row justify-content-between px-3 py-3">
-                        <div class="d-flex flex-row">
-                            <div class="d-flex flex-column">
-                                <p>{{ meuble.name }}</p>
-                                <p class="text-lightgrey">{{ meuble.get_volume_in_m }} m3</p>
+                <form method="post" action="{% url 'multiple-delete' %}">
+                    {% csrf_token %}
+                    {% for meuble in meubles %}
+                        <div class="d-flex flex-row justify-content-between px-3 py-3">
+                            <div class="d-flex flex-row">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="checkbox_{{ meuble.id }}" id="checkbox_{{ meuble.id }}">
+                                    <label class="custom-control-label" for="checkbox_{{ meuble.id }}"></label>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <p>{{ meuble.name }}</p>
+                                    <p class="text-lightgrey">{{ meuble.get_volume_in_m }} m3</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="{% url 'delete' meuble_id=meuble.id %}">[X]</a>
                             </div>
                         </div>
-                        <div>
-                            <a href="{% url 'delete' meuble_id=meuble.id %}" style="cursor: pointer;">[X]</a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                    <input class="btn btn-danger ml-2" type="submit" value="Supprimer les elements cochés">
+                </form>
             {% else %}
                 <div>
                     Aucun meuble enregistré
