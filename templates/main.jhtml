@@ -1,0 +1,77 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.scss' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<div class="main-div d-flex flex-column pt-5">
+
+    <div class="d-flex flex-row justify-content-center mb-5">
+        <div class="row top-row">
+            <div class="col-3">
+                <form id="meuble-form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-4">
+                        <input id="name" name="name" type="text" placeholder="Nom du meuble" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <input id="length" name="length" type="number" min="0" placeholder="Longueur (cm)" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <input id="width" name="width" type="number" min="0" placeholder="Largeur (cm)" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <input id="height" name="height" type="number" min="0" placeholder="Hauteur (cm)" required>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3 d-flex flex-column justify-content-between">
+                <div class="volume-displayer py-5 px-3">
+                    <span id="computed-volume">Volume</span> (m3)
+                </div>
+                <input class="btn btn-secondary" onclick="computeVolume()" value="Calculer le volume">
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column mx-5">
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <div>
+                <h2>Inventaire</h2>
+            </div>
+            <div class="d-flex flex-row">
+                <h2 class="mr-3">Volume total</h2>
+                {% if total_volume %}
+                <div class="volume-displayer py-2 px-3">{{ total_volume }} m3</div>
+                {% else %}
+                    <div class="volume-displayer py-2 px-3">---</div>
+                {% endif %}
+            </div>
+        </div>
+        <div style="border: 1px solid lightgrey" class="d-flex flex-column">
+            {% if meubles %}
+                {% for meuble in meubles %}
+                    <div class="d-flex flex-row justify-content-between">
+                        <div>
+                            <div>aa</div>
+                            <div>{{ meuble.name }}</div>
+                        </div>
+                        <div>X</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div>
+                    Aucun meuble enregistré
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<script type="application/javascript">
+    function computeVolume() {
+        const length = parseInt(document.getElementById('length').value, 10);
+        const width = parseInt(document.getElementById('width').value, 10);
+        const height = parseInt(document.getElementById('height').value, 10);
+        document.getElementById('computed-volume').innerText = (length * width * height) / 1000000;
+    }
+</script>
