@@ -8,7 +8,7 @@
     <div class="d-flex flex-row justify-content-center mb-5">
         <div class="row top-row">
             <div class="col-3">
-                <form id="meuble-form" method="post">
+                <form id="meuble-form" method="post" action="{% url 'compute' %}">
                     {% csrf_token %}
                     <div class="form-group mb-4">
                         <input id="name" name="name" type="text" placeholder="Nom du meuble" required>
@@ -28,33 +28,35 @@
                 <div class="volume-displayer py-5 px-3">
                     <span id="computed-volume">Volume</span> (m3)
                 </div>
-                <input class="btn btn-secondary" onclick="computeVolume()" value="Calculer le volume">
+                <input class="btn btn-secondary" type="button" onclick="computeVolume()" value="Calculer le volume">
+                <input class="btn btn-primary" type="submit" form="meuble-form" value="Ajouter">
             </div>
         </div>
     </div>
-    <div class="d-flex flex-column mx-5">
+    <div class="d-flex flex-column">
         <div class="d-flex flex-row justify-content-between mb-3">
             <div>
                 <h2>Inventaire</h2>
             </div>
             <div class="d-flex flex-row">
                 <h2 class="mr-3">Volume total</h2>
-                {% if total_volume %}
-                <div class="volume-displayer py-2 px-3">{{ total_volume }} m3</div>
+                {% if meubles %}
+                    <div class="volume-displayer py-2 px-3">{{ total_volume }} m3</div>
                 {% else %}
                     <div class="volume-displayer py-2 px-3">---</div>
                 {% endif %}
             </div>
         </div>
-        <div style="border: 1px solid lightgrey" class="d-flex flex-column">
+        <div class="d-flex flex-column meubles-bloc">
             {% if meubles %}
                 {% for meuble in meubles %}
-                    <div class="d-flex flex-row justify-content-between">
-                        <div>
-                            <div>aa</div>
-                            <div>{{ meuble.name }}</div>
+                    <div class="d-flex flex-row justify-content-between px-3 py-3">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column">
+                                <p>{{ meuble.name }}</p>
+                                <p class="text-lightgrey">{{ meuble.get_volume_in_m }} m3</p>
+                            </div>
                         </div>
-                        <div>X</div>
                     </div>
                 {% endfor %}
             {% else %}
