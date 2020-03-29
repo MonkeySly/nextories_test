@@ -57,6 +57,9 @@
                                 <p class="text-lightgrey">{{ meuble.get_volume_in_m }} m3</p>
                             </div>
                         </div>
+                        <div>
+                            <a href="{% url 'delete' meuble_id=meuble.id %}" style="cursor: pointer;">[X]</a>
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}

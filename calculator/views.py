@@ -32,3 +32,7 @@ def compute(request):
             pass
         return HttpResponseRedirect(reverse('index'))
 
+
+def delete(request, meuble_id):
+    Meuble.objects.get(id=meuble_id).delete()
+    return HttpResponseRedirect(reverse('index'))
